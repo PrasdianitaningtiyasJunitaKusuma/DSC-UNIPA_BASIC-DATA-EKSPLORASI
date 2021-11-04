@@ -1,0 +1,139 @@
+---
+title: "Latihan Basic Data Visualisasi Eksplorasi_DSC"
+author: "Prasdianitaningtiyas Junita Kusuma"
+date: "October 18, 2019"
+output: html_document
+---
+#IMPORT DATA SET
+```{r}
+data("mtcars")
+df <- data.frame(mtcars)
+```
+Data set yang digunakan untuk latihan kali ini adalah data set mtcars, dimana data tersebut diambil dari database software R. Data set mtcars berisi tentang spesifikasi dari beberapa varian mobil. Data diambil dari majalah Motor Trend US 1974, dan terdiri dari konsumsi bahan bakar dan 10 aspek desain dan kinerja mobil untuk 32 mobil (model 1973-1974). 
+
+#CEK DATA SET 
+##Menampilkan struktur data atau jenis data untuk masing-masing kolom.
+```{r}
+str(df)
+```
+Data set terdiri dari 32 observasi atau pengamatan dan terdiri dari 11 variabel. Berikut keterangan dari 11 variabel tersebut:
+mpg : Miles/(US) gallon
+cyl	: Number of cylinders
+disp:	Displacement (cu.in.)
+hp	: Gross horsepower
+drat:	Rear axle ratio
+wt	: Weight (1000 lbs)
+qsec:	1/4 mile time
+vs	: Engine (0 = V-shaped, 1 = straight)
+am	: Transmission (0 = automatic, 1 = manual)
+gear:	Number of forward gears
+carb: Number of carburetors
+
+##menampilkan 6 observasi teratas
+```{r}
+head(df)
+```
+
+Berdasarkan fungsi (head) tersebut dapat diketahui bahwa observasi pertama pada data set mtcars yaitu varian mobil mazda Rx4 dengan spesifikasi mobil yang dapat dilihat di kolom-kolom berikutnya mulai dari mpg, cyl, sampai carb.
+
+##menampilkan 6 observasi terbawah
+```{r}
+tail(df)
+```
+sedangkan 6 observasi terakhir pada data set tersebut yaitu varian mobil Porsche 914-2, Lotus Europa, Ford Pantera L, Ferrari Dino, Maserati Bora, dan Volvo 142E.
+
+##Merubah variabel vs dan am dari tipe numerik menjadi kategorik
+```{r}
+df$vs <- as.factor(df$vs)
+df$am <- as.factor(df$am)
+```
+
+##Ringkasan Data
+```{r}
+summary(df)
+```
+Berdasarkan statistik deskriptif dari 9 variabel (tipe numerik) dapat diketahui nilai minimal, mean (rata-rata), maksimal, median, kuartil 1, dan kuartil 3. untuk variabel kategorik yaitu vs dan am, dapat diketahui bahwa untuk variabel vs jumlah varian mobil yang memiliki spesifikasi V-shaped sebanyak 18 dan straight sebanyak 14. sedangkan untuk variabel am jumlah varian mobil yang memiliki spesifikasi automatic sebanyak 19 dan manual sebanyak 13 mobil.
+
+#mendeteksi missing value
+```{r}
+#deteksi missing value tiap variabel
+is.na(df$mpg)
+is.na(df$cyl)
+#deteksi missing value secara keseluruhan
+summary(is.na(df))
+#atau
+sapply(df, function(x) sum(is.na(x)))
+```
+
+Setelah dilakukan deteksi missing value, dapat disimpulkan bahwa pada data set mtcars tidak terdapat mising value atau data yang kosong.
+
+#Visualisasi data
+##Contoh scatter plot
+```{r}
+plot(df$disp)
+```
+
+Dari scatter plot tersebut nampak bahwa pola data menyebar.
+
+##basic plot both => point and line
+```{r}
+plot(df$mpg, type='b')
+```
+
+berdasarkan plot diatas menunjukkan bahwa pada variabel mpg observasi yang memiliki nilai tertinggi yaitu pada observasi ke 20 (varian mobil Toyota Corolla).
+
+##memampilkan garis rata-rata
+```{r}
+plot(df$mpg, type = 'b')
+lines(seq(1:nrow(df)),
+      rep(mean(df$mpg),32),lwd = 2,col='navy')
+```
+
+#menampilkan plot x=hp dan y= mpg
+```{r}
+plot(df$hp,df$mpg, pch=19)
+```
+
+#menampilkan hubungan antar 2 variabel
+```{r}
+plot(df)
+plot(df$hp, xlab = 'hp', ylab = 'No of Instances', main = 'hp', col = 'blue')
+```
+
+#bar plot
+##horizontal bar plot
+```{r}
+barplot(df$hp, main = 'hp',xlab = 'hp', col= 'maroon',horiz = TRUE)
+```
+
+berdasaran grafik tersebut dapat diketahui bahwa varian mobil yang memiliki nilai terbanyak untuk variabel hp yaitu Maserati Bora (observasi ke 31).
+
+##vertikal bar plot
+```{r}
+barplot(df$hp, main = 'hp',xlab = 'hp', col= 'maroon',horiz = FALSE)
+```
+
+#histogram
+```{r}
+hist(df$hp)
+```
+
+#boxplot
+```{r}
+boxplot(df$hp)
+boxplot(df$mpg)
+```
+
+berdasarkan grafik boxplot untuk variabel hp dapat diketahui bahwa terdapat data yang outlier yaitu sebanyak 1 observasi. sedangkan grafik boxplot untuk variaebl mg tidak terdapat data yang outlier.
+
+
+#Multiple boxplot
+```{r}
+boxplot(df[,0:5], main = 'Multiple Box plot')
+```
+
+```{r}
+boxplot(df[,0:5], main = 'Multiple Box plot')
+```
+
+berdasarkan gambar tersebut dapat diketahui bahwa variabel-variabel yang terdapat data yang outlier yaitu variabel hp, wt, qsec, dan carb.
